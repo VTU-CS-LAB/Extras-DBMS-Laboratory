@@ -1,0 +1,66 @@
+create table Employee(Fname varchar(15),Minit char,Lname varchar(15) ,SSN char(9) Primary Key,Bdate Date,Address varchar(30),Sex char,Salary decimal(10,2),SuperSSN char(9),Dno Int);
+
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('John','B','Smith','123456789','09-JAN-65','731 Fondren, Houston, TX','M',30000,'333445555',5);
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('Franklin','T','Wong','333445555','08-DEC-55','638 Voss, Houston, TX','M',40000,'888665555',5);
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('Alicia','J','Zelaya','999887777','19-JAN-68','3321 Castle, Spring, TX','F',25000,'987654321',4);
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('Jennifer','S','Wallace','987654321','20-JUN-41','291 Berry, Bellaire, TX','F',43000,'888665555',4);
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('Ramesh','K','Narayan','666884444','15-SEP-62','975 Fire Oak, Humble, TX','M',38000,'333445555',5);
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('Joyce','A','English','453453453','31-JUL-72','5631 Rice, Houston, TX','F',25000,'333445555',5);
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('Ahmad','V','Jabbar','987987987','29-MAR-69','980 Dallas, Houston, TX','M',25000,'987654321',4);
+Insert into EMPLOYEE (FNAME,MINIT,LNAME,SSN,BDATE,ADDRESS,SEX,SALARY,SUPERSSN,DNO) values ('James','E','Borg','888665555','10-NOV-37','450 Stone, Houston, TX','M',55000,null,1);
+
+create table Department(Dname varchar(15) Unique,Dnumber Int Primary Key,MgrSSN char(9),Mgr_SDate Date);
+
+Insert into DEPARTMENT (DNAME,DNUMBER,MGRSSN,MGR_SDATE) values ('Research',5,'333445555','22-MAY-88');
+Insert into DEPARTMENT (DNAME,DNUMBER,MGRSSN,MGR_SDATE) values ('Administration',4,'987654321','01-JAN-95');
+Insert into DEPARTMENT (DNAME,DNUMBER,MGRSSN,MGR_SDATE) values ('Headquaters',1,'888665555','19-JUN-81');
+
+alter table Employee add Foreign Key(SuperSSN) references Employee(SSN);
+alter table Department add Foreign key(MGRSSN) references Employee(SSN);
+alter table Employee add Foreign Key(Dno) references Department(Dnumber);
+
+create table DLocations(Dnumber int,DLocation varchar(15),primary key(Dnumber,Dlocation),foreign key(Dnumber) references Department(Dnumber));
+
+Insert into DLOCATIONS (DNUMBER,DLOCATION) values (1,'Houston');
+Insert into DLOCATIONS (DNUMBER,DLOCATION) values (4,'Stafford');
+Insert into DLOCATIONS (DNUMBER,DLOCATION) values (5,'Bellaire');
+Insert into DLOCATIONS (DNUMBER,DLOCATION) values (5,'Houston');
+Insert into DLOCATIONS (DNUMBER,DLOCATION) values (5,'Sugarland');
+
+create table Project(Pname varchar(15) Unique,Pnumber int primary key,Plocation varchar(15),DNum int,Foreign key(dnum) references Department(Dnumber));
+
+Insert into PROJECT (PNAME,PNUMBER,PLOCATION,DNUM) values ('ProductX',1,'Bellaire',5);
+Insert into PROJECT (PNAME,PNUMBER,PLOCATION,DNUM) values ('ProductY',2,'Sugarland',5);
+Insert into PROJECT (PNAME,PNUMBER,PLOCATION,DNUM) values ('ProductZ',3,'Houston',5);
+Insert into PROJECT (PNAME,PNUMBER,PLOCATION,DNUM) values ('Computerization',10,'Stafford',4);
+Insert into PROJECT (PNAME,PNUMBER,PLOCATION,DNUM) values ('Reorganization',20,'Houston',1);
+Insert into PROJECT (PNAME,PNUMBER,PLOCATION,DNUM) values ('Newbenefits',30,'Stafford',4);
+
+create table Works_on(Essn char(9),Pno int,Hours Decimal(3,1),Primary key(Essn,Pno),Foreign key(Essn) references Employee(SSN),Foreign key(Pno) references Project(Pnumber));
+
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('123456789',1,32.5);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('123456789',2,7.5);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('666884444',3,40);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('453453453',1,20);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('453453453',2,20);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('333445555',2,10);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('333445555',3,10);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('333445555',10,10);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('333445555',20,10);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('999887777',30,30);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('999887777',10,10);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('987987987',10,35);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('987987987',30,5);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('987654321',30,20);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('987654321',20,15);
+Insert into WORKS_ON (ESSN,PNO,HOURS) values ('888665555',20,null);
+
+create table Dependents(Essn char(9),Dependant_Name varchar(15),Sex char,Bdate Date,Relationship varchar(8),primary key(Essn,Dependant_Name),Foreign key(Essn) references Employee(Ssn));
+
+Insert into DEPENDENTS (ESSN,DEPENDANT_NAME,SEX,BDATE,RELATIONSHIP) values ('333445555','Alice','F','05-APR-86','Daughter');
+Insert into DEPENDENTS (ESSN,DEPENDANT_NAME,SEX,BDATE,RELATIONSHIP) values ('333445555','Theodore','M','25-OCT-83','Son');
+Insert into DEPENDENTS (ESSN,DEPENDANT_NAME,SEX,BDATE,RELATIONSHIP) values ('333445555','Joy','F','03-MAY-58','Spouse');
+Insert into DEPENDENTS (ESSN,DEPENDANT_NAME,SEX,BDATE,RELATIONSHIP) values ('987654321','Abner','M','28-FEB-42','Spouse');
+Insert into DEPENDENTS (ESSN,DEPENDANT_NAME,SEX,BDATE,RELATIONSHIP) values ('123456789','Michael','M','02-JAN-88','Son');
+Insert into DEPENDENTS (ESSN,DEPENDANT_NAME,SEX,BDATE,RELATIONSHIP) values ('123456789','Alice','F','30-DEC-88','Daughter');
+Insert into DEPENDENTS (ESSN,DEPENDANT_NAME,SEX,BDATE,RELATIONSHIP) values ('123456789','Elizabeth','F','05-MAY-67','Spouse');
